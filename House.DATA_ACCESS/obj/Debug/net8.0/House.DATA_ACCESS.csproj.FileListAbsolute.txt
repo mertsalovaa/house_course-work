@@ -1,0 +1,14 @@
+D:\нувгп\ІПЗ-41\HouseProject\House.DATA_ACCESS\bin\Debug\net8.0\House.DATA_ACCESS.deps.json
+D:\нувгп\ІПЗ-41\HouseProject\House.DATA_ACCESS\bin\Debug\net8.0\House.DATA_ACCESS.runtimeconfig.json
+D:\нувгп\ІПЗ-41\HouseProject\House.DATA_ACCESS\bin\Debug\net8.0\House.DATA_ACCESS.dll
+D:\нувгп\ІПЗ-41\HouseProject\House.DATA_ACCESS\bin\Debug\net8.0\House.DATA_ACCESS.pdb
+D:\нувгп\ІПЗ-41\HouseProject\House.DATA_ACCESS\obj\Debug\net8.0\House.DATA_ACCESS.csproj.AssemblyReference.cache
+D:\нувгп\ІПЗ-41\HouseProject\House.DATA_ACCESS\obj\Debug\net8.0\House.DATA_ACCESS.GeneratedMSBuildEditorConfig.editorconfig
+D:\нувгп\ІПЗ-41\HouseProject\House.DATA_ACCESS\obj\Debug\net8.0\House.DATA_ACCESS.AssemblyInfoInputs.cache
+D:\нувгп\ІПЗ-41\HouseProject\House.DATA_ACCESS\obj\Debug\net8.0\House.DATA_ACCESS.AssemblyInfo.cs
+D:\нувгп\ІПЗ-41\HouseProject\House.DATA_ACCESS\obj\Debug\net8.0\House.DATA_ACCESS.csproj.CoreCompileInputs.cache
+D:\нувгп\ІПЗ-41\HouseProject\House.DATA_ACCESS\obj\Debug\net8.0\House.DATA_ACCESS.dll
+D:\нувгп\ІПЗ-41\HouseProject\House.DATA_ACCESS\obj\Debug\net8.0\refint\House.DATA_ACCESS.dll
+D:\нувгп\ІПЗ-41\HouseProject\House.DATA_ACCESS\obj\Debug\net8.0\House.DATA_ACCESS.pdb
+D:\нувгп\ІПЗ-41\HouseProject\House.DATA_ACCESS\obj\Debug\net8.0\House.DATA_ACCESS.genruntimeconfig.cache
+D:\нувгп\ІПЗ-41\HouseProject\House.DATA_ACCESS\obj\Debug\net8.0\ref\House.DATA_ACCESS.dll

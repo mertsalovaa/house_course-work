@@ -1,0 +1,57 @@
+// You can use Ethernet.init(pin) to configure the CS pin
+  //Ethernet.init(10);  // Most Arduino shields
+  //Ethernet.init(5);   // MKR ETH shield
+  //Ethernet.init(0);   // Teensy 2.0
+  //Ethernet.init(20);  // Teensy++ 2.0
+  //Ethernet.init(15);  // ESP8266 with Adafruit Featherwing Ethernet
+  //Ethernet.init(33);  // ESP32 with Adafruit Featherwing Ethernet
+
+//  // Виконання get запиту
+  // client.beginRequest();
+  // client.get("/Main/get-house-states?data=My%20data%20gives%20in%20request!");
+  // client.sendHeader("Host", server);
+  // client.sendHeader("User-Agent", "Arduino/1.0");
+  // client.endRequest();
+
+  // // Очікування відповіді
+  // int statusCode = client.responseStatusCode();
+  // String response = client.responseBody();
+
+  // // Виведення результату
+  // Serial.print("Status code: ");
+  // Serial.println(statusCode);
+  // Serial.println("Response:");
+  // Serial.println(response);
+
+
+
+// post request
+
+  // DynamicJsonDocument doc(256);
+  // doc["Temperature"] = "19.5";
+  // doc["Humidity"] = "45.5";
+  // doc["Gas"] = "115";
+  // doc["DateTime"] = "26.10.2024 05:39:05";
+  // doc["User"] = "503163c1-13fe-441b-bf33-4c7af8257b3d";
+
+  // String postData;
+  // serializeJson(doc, postData);
+
+  // String contentType = "application/json";
+
+  // client.beginRequest();
+  // client.post("/Main/add-new-state");
+  // client.sendHeader("Content-Type", contentType);
+  // client.sendHeader("Content-Length", postData.length());
+  // client.sendHeader("Host", server);
+  // client.beginBody();
+  // client.print(postData);
+  // client.endRequest();
+
+  // int statusCode = client.responseStatusCode();
+  // String response = client.responseBody();
+
+  // Serial.print("Status code: ");
+  // Serial.println(statusCode);
+  // Serial.print("Response: ");
+  // Serial.println(response);

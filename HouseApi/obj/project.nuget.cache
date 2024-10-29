@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "QXDki23JmYkGfime5o/9hmTJj+K/fKkdlPVwPNLQz7s5PY9PJxq7PldrTgmzsV7rBle8UUHBW196ggvws6mOwg==",
+  "success": true,
+  "projectFilePath": "D:\\нувгп\\ІПЗ-41\\HouseProject\\HouseApi\\House.API.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Iryna Mertsalova\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
+    "C:\\Users\\Iryna Mertsalova\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\Iryna Mertsalova\\.nuget\\packages\\swashbuckle.aspnetcore\\6.4.0\\swashbuckle.aspnetcore.6.4.0.nupkg.sha512",
+    "C:\\Users\\Iryna Mertsalova\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.4.0\\swashbuckle.aspnetcore.swagger.6.4.0.nupkg.sha512",
+    "C:\\Users\\Iryna Mertsalova\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.4.0\\swashbuckle.aspnetcore.swaggergen.6.4.0.nupkg.sha512",
+    "C:\\Users\\Iryna Mertsalova\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.4.0\\swashbuckle.aspnetcore.swaggerui.6.4.0.nupkg.sha512"
+  ],
+  "logs": []
+}

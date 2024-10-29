@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34511.84
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "House.DATA_ACCESS", "House.DATA_ACCESS\House.DATA_ACCESS.csproj", "{7E01F87E-2119-41F1-8234-21DDF04FF505}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "House.API", "House.API\House.API.csproj", "{01EB47F1-CF3B-4C33-B495-A77D7ED9A794}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7E01F87E-2119-41F1-8234-21DDF04FF505}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E01F87E-2119-41F1-8234-21DDF04FF505}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E01F87E-2119-41F1-8234-21DDF04FF505}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E01F87E-2119-41F1-8234-21DDF04FF505}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01EB47F1-CF3B-4C33-B495-A77D7ED9A794}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01EB47F1-CF3B-4C33-B495-A77D7ED9A794}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01EB47F1-CF3B-4C33-B495-A77D7ED9A794}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01EB47F1-CF3B-4C33-B495-A77D7ED9A794}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {68CE46C5-21E4-4D3C-AB07-AF6B87A02D5C}
+	EndGlobalSection
+EndGlobal
