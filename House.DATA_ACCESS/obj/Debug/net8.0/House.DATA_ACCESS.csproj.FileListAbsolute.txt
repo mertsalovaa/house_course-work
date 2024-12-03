@@ -12,3 +12,4 @@ D:\нувгп\ІПЗ-41\HouseProject\House.DATA_ACCESS\obj\Debug\net8.0\refint\H
 D:\нувгп\ІПЗ-41\HouseProject\House.DATA_ACCESS\obj\Debug\net8.0\House.DATA_ACCESS.pdb
 D:\нувгп\ІПЗ-41\HouseProject\House.DATA_ACCESS\obj\Debug\net8.0\House.DATA_ACCESS.genruntimeconfig.cache
 D:\нувгп\ІПЗ-41\HouseProject\House.DATA_ACCESS\obj\Debug\net8.0\ref\House.DATA_ACCESS.dll
+D:\нувгп\ІПЗ-41\HouseProject\House.DATA_ACCESS\obj\Debug\net8.0\House.DATA_ACCESS.sourcelink.json

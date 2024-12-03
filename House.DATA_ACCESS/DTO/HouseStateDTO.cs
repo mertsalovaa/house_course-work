@@ -14,5 +14,6 @@ namespace House.DATA_ACCESS.DTO
         public string Gas { get; set; } = string.Empty;
         public string DateTime { get; set; } = string.Empty; 
         public string User { get; set; } = string.Empty;
+        public string Status { get ; set; } = string.Empty;
     }
 }

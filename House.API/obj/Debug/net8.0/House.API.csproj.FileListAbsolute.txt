@@ -156,3 +156,4 @@ D:\нувгп\ІПЗ-41\HouseProject\House.API\bin\Debug\net8.0\runtimes\win\lib
 D:\нувгп\ІПЗ-41\HouseProject\House.API\bin\Debug\net8.0\House.DATA_ACCESS.dll
 D:\нувгп\ІПЗ-41\HouseProject\House.API\bin\Debug\net8.0\House.DATA_ACCESS.pdb
 D:\нувгп\ІПЗ-41\HouseProject\House.API\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\нувгп\ІПЗ-41\HouseProject\House.API\obj\Debug\net8.0\House.API.sourcelink.json

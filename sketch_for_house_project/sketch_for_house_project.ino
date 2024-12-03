@@ -10,26 +10,20 @@
 #define DHTTYPE DHT22  // Визначення типу датчика DHT (може бути DHT11, DHT21, DHT22)
 #define MQ3PIN A15
 
-// Set the static IP address to use if the DHCP fails to assign
-IPAddress ip(192, 168, 1, 104);   // 192.168.1.104
-IPAddress myDns(192, 168, 1, 1);  // 192, 168, 1, 1
-// Enter a MAC address for your controller below.
-// Newer Ethernet shields have a MAC address printed on a sticker on the shield
+IPAddress ip(192, 168, 1, 104);   
+IPAddress myDns(192, 168, 1, 1); 
 byte mac[] = { 0x90, 0xA2, 0xDA, 0x10, 0xCD, 0xCE };
 
 char server[] = "192.168.1.104";
 
-// Initialize the Ethernet client library
-// with the IP address and port of the server
-// that you want to connect to (port 80 is default for HTTP):
 EthernetClient ethClient;
 HttpClient client = HttpClient(ethClient, ip, 5213);
+
 DHT dht(DHTPIN, DHTTYPE);  // Ініціалізація об'єкта класу DHT, для бібліотеки DHT
 
-// Variables to measure the speed
 unsigned long beginMicros, endMicros;
 unsigned long byteCount = 0;
-bool printWebData = true;  // set to false for better speed measurement
+
 const int relayPin = 26;   // Визначення піна, на якому підключений модуль реле
 const int ledPin = 24;     // Визначення піна, на якому підключений світлодіод
 
@@ -46,38 +40,37 @@ float temperature = 0;  // Зчитування температури
 float humidity = 0;     // Зчитування вологості
 float gasValue = 0;     // Зчитування gas value
 
+// Норми
 float tempNormal = 0.0;
 float humidNormal = 0.0;
 float gasNormal = 0.0;
 
 void setup() {
-  // Open serial communications and wait for port to open:
   Serial.begin(9600);
   while (!Serial) {
-    ;  // wait for serial port to connect. Needed for native USB port only
+    ; 
   }
   dht.begin();
 
   pinMode(relayPin, OUTPUT);  // Режим піна, який буде використовуватись для виведення
   pinMode(ledPin, OUTPUT);    // Режим піна, який буде використовуватись для виведення
 
-  // start the Ethernet connection:
   Serial.println("Initialize Ethernet with DHCP:");
-
+  Serial.println(Ethernet.hardwareStatus());
   if (Ethernet.begin(mac) == 0) {
     Serial.println("Failed to configure Ethernet using DHCP");
-    // Check for Ethernet hardware present
     if (Ethernet.hardwareStatus() == EthernetNoHardware) {
       Serial.println("Ethernet shield was not found.  Sorry, can't run without hardware. :(");
       while (true) {
-        delay(1);  // do nothing, no point running without Ethernet hardware
+        delay(1); 
       }
     }
     if (Ethernet.linkStatus() == LinkOFF) {
       Serial.println("Ethernet cable is not connected.");
     }
-    // try to congifure using IP address instead of DHCP:
+    
     Ethernet.begin(mac, IPAddress(192, 168, 1, 104), myDns);
+    Serial.println(Ethernet.localIP());
   } else {
     Serial.print("  DHCP assigned IP ");
     Serial.println(Ethernet.localIP());
@@ -87,12 +80,14 @@ void setup() {
   Serial.print("Connecting to ");
   Serial.println(server);
   delay(2000);
+
   // Виконання get запиту
   client.beginRequest();
   client.get("/Account/get-normas-by-email?email=irynamertsalova@gmail.com");
   client.sendHeader("Host", server);
   client.sendHeader("User-Agent", "Arduino/1.0");
   client.endRequest();
+
   // Очікування відповіді
   int statusCode = client.responseStatusCode();
   String response = client.responseBody();
@@ -162,7 +157,6 @@ void loop() {
     lastHumidity = humidity;
     lastGas = gasValue;
   }
-
   delay(10000);
 }
 
@@ -174,14 +168,12 @@ float parseStringToFloat(String dataStr) {
 
 void conditionFunc(float temp, float humid, float gas) {
   if (temp > tempNormal + 2 || temp < tempNormal - 2 || humid < humidNormal - 10 || humid > humidNormal + 10) {
-    //digitalWrite(relayPin, HIGH);       // Включення вентилятора
     digitalWrite(ledPin, HIGH);  // Включення світлодіода
     Serial.println("Check your data !");
     Serial.println("Something's not in your normal.");
     delay(500);
     digitalWrite(ledPin, LOW);  // Вuключення світлодіода
   } else {
-    //digitalWrite(relayPin, LOW);        // Виключення вентилятора
     Serial.println("Everything's in normal period !");
   }
 }

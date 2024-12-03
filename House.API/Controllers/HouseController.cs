@@ -4,34 +4,23 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using House.DATA_ACCESS.JWT;
 using House.DATA_ACCESS.DTO;
+using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
+using System;
+using System.Data;
 
 namespace House.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     public class HouseController : ControllerBase
-    {
-        //private static readonly string[] Summaries = new[]
-        //{
-        //    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        //};
-
+    {        
         private readonly EFContext context;
-        private readonly UserManager<User> userManager;
-        private readonly SignInManager<User> signInManager;
-        private readonly IJWTTokenService jwtTokenService;
 
         public HouseController(
-            EFContext _context,
-            UserManager<User> _userManager,
-            SignInManager<User> _signInManager,
-            IJWTTokenService _jwtTokenService
+            EFContext _context
             )
         {
             this.context = _context;
-            this.userManager = _userManager;
-            this.signInManager = _signInManager;
-            this.jwtTokenService = _jwtTokenService;
 
             var archiveStates = context.HouseStates.Where(x => x.CurrentDate.Date != DateTime.Now.Date).ToList();
             var archive = new List<Archive>();
@@ -56,6 +45,44 @@ namespace House.API.Controllers
         public List<HouseState> GetArchive()
         {
             return context.HouseStates.Where(x => x.CurrentDate.Date != DateTime.Now.Date).ToList();
+        }
+
+        [HttpGet("get-last-data")]
+        public HouseStateDTO GetLastData()
+        {
+            var last = context.HouseStates.OrderBy(x => x.Id).LastOrDefault();
+            var user = context.Users.FirstOrDefault(x => x.Id == last!.UserId);
+
+            return new HouseStateDTO()
+            {
+                Id = last!.Id,
+                Temperature = last.Temperature,
+                Humidity = last.Humidity,
+                User = user!.UserName!,
+                Gas = last.Gas,
+                DateTime = $"{last.CurrentDate.Day}/{last.CurrentDate.Month}/{last.CurrentDate.Year} {last.CurrentDate.ToLongTimeString()}",
+                Status = GetHouseStatus(last, user)
+            };
+        }
+
+        private static string GetHouseStatus(HouseState? last, User? user)
+        {
+            if (GetFloat(last!.Temperature) > user!.TemperatureNormal + 2 ||
+                GetFloat(last.Temperature) < user.TemperatureNormal - 2 ||
+                GetFloat(last.Humidity) < user.HumidityNormal - 10 ||
+                GetFloat(last.Humidity) > user.HumidityNormal + 10)
+            {
+                return "Something's not in your normal.";
+            }
+            else
+            {
+                return "Everything's in normal period !";
+            }
+        }
+
+        private static float GetFloat(string str)
+        {
+            return float.Parse(str.Replace('.', ','));
         }
 
         [HttpPost("add-new-state")]
