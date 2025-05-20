@@ -16,4 +16,10 @@ namespace House.DATA_ACCESS.DTO.Account
         [Required(ErrorMessage = "Поле «Пароль» є обов'язковим")]
         public string Password { get; set; } = string.Empty;
     }
+
+    public class RegisterDTO : UserDTO
+    {
+        [Required(ErrorMessage = "Поле «Пароль» є обов'язковим")]
+        public string Password { get; set; } = string.Empty;
+    }
 }

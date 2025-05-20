@@ -1,0 +1,55 @@
+<Loader loading={loading} />
+            <MainDiv>
+                <header className='flex items-center justify-between pb-3'>
+                    <img src={logo} alt='logo' width={200} height={70} />
+                    {/* <Title>{data.user}</Title> */}
+                </header>
+                {/* <span>
+          <Text>Temperature: </Text>
+          <Title>{data.temperature} °C</Title>
+        </span>
+        <span>
+          <Text>Humidity: </Text>
+          <Title>{data.humidity} %</Title>
+        </span>
+        <span>
+          <Text>Gas: </Text>
+          <Title>{data.gas}</Title>
+        </span>
+        <span className='mt-5 border-t-2 border-[var(--main-color)] w-2/5'>
+          <Title>Status: </Title>
+          <Text>{data.status}</Text>
+        </span> */}
+                <input className='border border-red-100' type='email' id='email' name='email' placeholder='Enter email' value={email} onChange={(e) => setEmail(e.target.value)} />
+                <input type='password' id='password' name='password' placeholder='Enter password' value={password} onChange={(e) => setPassword(e.target.value)} />
+                <button onClick={async () => {
+                    console.log(email);
+                    console.log(password);
+
+                    try {
+                        const response = await fetch("http://192.168.1.103:5213/Account/login", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({ email, password }),
+                        });
+
+                        if (!response.ok) {
+                            const errorText = await response.text(); // Для налагодження
+                            console.error("Login failed:", errorText);
+                            return;
+                        }
+
+                        const data = await response.json(); // 🟢 Ось тут await обов'язково
+                        console.log("Token:", data.token);   // Залежить від формату твоєї відповіді
+
+                        localStorage.setItem("token", data.token); // Зберігаєш токен
+                    } catch (error) {
+                        console.error("Fetch error:", error);
+                    }
+                }}>
+                    Login
+                </button>
+
+            </MainDiv>

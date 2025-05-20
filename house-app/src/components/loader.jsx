@@ -1,4 +1,5 @@
 import { BounceLoader } from "react-spinners";
+import { colors } from "../assets/colors";
 
 export default function Loader({loading}) {
   return (
@@ -11,11 +12,11 @@ export default function Loader({loading}) {
           minHeight: "100vh",
           display: !loading ? "none" : "flex",
           alignItems: "center",
-          backgroundColor: "#fff",
+          backgroundColor: "#ffffff89",
         }}
       >
         <BounceLoader
-          color="var(--main-color)"
+          color={colors.main}
           cssOverride={{ position: "absolute", top: "40%", left: "50%" }}
           loading={loading}
           size={70}

@@ -14,6 +14,24 @@
     url("./assets/font/IBMPlexSans-SemiBold.ttf") format("truetype");
 }
 
+@font-face {
+  font-family: "eUkraine-Bold";
+  src: local("eUkraine-Bold"),
+    url("./assets/font/e-Ukraine/e-Ukraine-Bold.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "eUkraine-Regular";
+  src: local("eUkraine-Regular"),
+    url("./assets/font/e-Ukraine/e-Ukraine-Regular.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "eUkraine-Light";
+  src: local("eUkraine-Light"),
+    url("./assets/font/e-Ukraine/e-Ukraine-Light.otf") format("opentype");
+}
+
 :root {
   --main-color: #06402b;
   --secondary-color: #fff;

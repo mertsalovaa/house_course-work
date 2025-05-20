@@ -14,19 +14,19 @@ namespace House.DATA_ACCESS.Entities
         public int Id { get; set; }
 
         [Required]
-        public string Temperature { get; set; } = string.Empty;
+        public float Temperature { get; set; }
 
         [Required]
-        public string Humidity { get; set; } = string.Empty;
+        public float Humidity { get; set; }
 
         [Required]
-        public string Gas { get; set; } = string.Empty;
+        public float Gas { get; set; }
 
         [Required]
         public DateTime CurrentDate { get; set; }
 
-        public string UserId { get; set; }
-        [ForeignKey(nameof(UserId))]
-        public virtual User User { get; set; }
+        public int DeviceId { get; set; }
+        [ForeignKey(nameof(DeviceId))]
+        public virtual Device Device { get; set; }
     }
 }

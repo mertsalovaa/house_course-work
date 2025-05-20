@@ -33,8 +33,8 @@ namespace House.DATA_ACCESS.JWT
             var roles = userManager.GetRolesAsync(user).Result;
             var claims = new List<Claim>
             {
-                new Claim("id", user.Id.ToString()),
-                new Claim("email", user.Email.ToString())
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email.ToString())
             };
 
             foreach (var role in roles)
@@ -49,7 +49,7 @@ namespace House.DATA_ACCESS.JWT
             var jwt = new JwtSecurityToken(
                     signingCredentials: signInCredentials,
                     claims: claims,
-                    expires: DateTime.Now.AddDays(30)
+                    expires: DateTime.Now.AddDays(2)
                 );
 
             return new JwtSecurityTokenHandler().WriteToken(jwt);

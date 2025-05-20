@@ -40,6 +40,66 @@ namespace House.DATA_ACCESS.Migrations
                     b.ToTable("Archive");
                 });
 
+            modelBuilder.Entity("House.DATA_ACCESS.Entities.Device", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HardwareId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Devices");
+                });
+
+            modelBuilder.Entity("House.DATA_ACCESS.Entities.DevicePairingToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DeviceId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeviceId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("PairingTokens");
+                });
+
             modelBuilder.Entity("House.DATA_ACCESS.Entities.HouseState", b =>
                 {
                     b.Property<int>("Id")
@@ -51,25 +111,21 @@ namespace House.DATA_ACCESS.Migrations
                     b.Property<DateTime>("CurrentDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Gas")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("DeviceId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Humidity")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<float>("Gas")
+                        .HasColumnType("real");
 
-                    b.Property<string>("Temperature")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<float>("Humidity")
+                        .HasColumnType("real");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<float>("Temperature")
+                        .HasColumnType("real");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("DeviceId");
 
                     b.ToTable("HouseStates");
                 });
@@ -300,15 +356,41 @@ namespace House.DATA_ACCESS.Migrations
                     b.Navigation("HouseState");
                 });
 
-            modelBuilder.Entity("House.DATA_ACCESS.Entities.HouseState", b =>
+            modelBuilder.Entity("House.DATA_ACCESS.Entities.Device", b =>
                 {
+                    b.HasOne("House.DATA_ACCESS.Entities.User", "User")
+                        .WithMany("Devices")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("House.DATA_ACCESS.Entities.DevicePairingToken", b =>
+                {
+                    b.HasOne("House.DATA_ACCESS.Entities.Device", "Device")
+                        .WithMany()
+                        .HasForeignKey("DeviceId");
+
                     b.HasOne("House.DATA_ACCESS.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Device");
+
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("House.DATA_ACCESS.Entities.HouseState", b =>
+                {
+                    b.HasOne("House.DATA_ACCESS.Entities.Device", "Device")
+                        .WithMany("HouseStates")
+                        .HasForeignKey("DeviceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Device");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -360,6 +442,16 @@ namespace House.DATA_ACCESS.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("House.DATA_ACCESS.Entities.Device", b =>
+                {
+                    b.Navigation("HouseStates");
+                });
+
+            modelBuilder.Entity("House.DATA_ACCESS.Entities.User", b =>
+                {
+                    b.Navigation("Devices");
                 });
 #pragma warning restore 612, 618
         }

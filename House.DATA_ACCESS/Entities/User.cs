@@ -14,10 +14,16 @@ namespace House.DATA_ACCESS.Entities
         public string Address { get; set; } = string.Empty;
 
         [Required]
-        public string Notes { get; set; } = string.Empty;
-
         public float TemperatureNormal { get; set; }
+
+        [Required]
         public float HumidityNormal { get; set; }
+
+        [Required]
         public float GasNormal { get; set; }
+        
+        public virtual ICollection<Device> Devices { get; set; } = new List<Device>();
+        
+        public string Notes { get; set; } = string.Empty;
     }
 }

@@ -7,20 +7,23 @@ using House.DATA_ACCESS.DTO;
 using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 using System;
 using System.Data;
+using System.Security.Claims;
 
 namespace House.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     public class HouseController : ControllerBase
-    {        
+    {
         private readonly EFContext context;
+        private readonly UserManager<User> userManager;
 
         public HouseController(
-            EFContext _context
-            )
+            EFContext _context,
+            UserManager<User> _userManager)
         {
             this.context = _context;
+            this.userManager = _userManager;
 
             var archiveStates = context.HouseStates.Where(x => x.CurrentDate.Date != DateTime.Now.Date).ToList();
             var archive = new List<Archive>();
@@ -47,30 +50,32 @@ namespace House.API.Controllers
             return context.HouseStates.Where(x => x.CurrentDate.Date != DateTime.Now.Date).ToList();
         }
 
-        [HttpGet("get-last-data")]
-        public HouseStateDTO GetLastData()
+        [HttpGet("get-lastData-data")]
+        public async Task<HouseStateDTO> GetLastData()
         {
-            var last = context.HouseStates.OrderBy(x => x.Id).LastOrDefault();
-            var user = context.Users.FirstOrDefault(x => x.Id == last!.UserId);
+            var lastData = context.HouseStates.OrderBy(x => x.Id).LastOrDefault();
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var user = await userManager.FindByIdAsync(userId);
 
             return new HouseStateDTO()
             {
-                Id = last!.Id,
-                Temperature = last.Temperature,
-                Humidity = last.Humidity,
-                User = user!.UserName!,
-                Gas = last.Gas,
-                DateTime = $"{last.CurrentDate.Day}/{last.CurrentDate.Month}/{last.CurrentDate.Year} {last.CurrentDate.ToLongTimeString()}",
-                Status = GetHouseStatus(last, user)
+                Id = lastData!.Id,
+                Temperature = lastData.Temperature.ToString(),
+                Humidity = lastData.Humidity.ToString(),
+                Gas = lastData.Gas.ToString(),
+                UserEmail = user.Email,
+                DeviceName = lastData.DeviceId.ToString(),
+                DateTime = $"{lastData.CurrentDate.Day}/{lastData.CurrentDate.Month}/{lastData.CurrentDate.Year} {lastData.CurrentDate.ToLongTimeString()}",
+                Status = GetHouseStatus(lastData, user)
             };
         }
 
         private static string GetHouseStatus(HouseState? last, User? user)
         {
-            if (GetFloat(last!.Temperature) > user!.TemperatureNormal + 2 ||
-                GetFloat(last.Temperature) < user.TemperatureNormal - 2 ||
-                GetFloat(last.Humidity) < user.HumidityNormal - 10 ||
-                GetFloat(last.Humidity) > user.HumidityNormal + 10)
+            if (last.Temperature > user!.TemperatureNormal + 2 ||
+                last.Temperature < user.TemperatureNormal - 2 ||
+                last.Humidity < user.HumidityNormal - 10 ||
+                last.Humidity > user.HumidityNormal + 10)
             {
                 return "Something's not in your normal.";
             }
@@ -90,11 +95,11 @@ namespace House.API.Controllers
         {
             HouseState houseState = new HouseState()
             {
-                Temperature = data.Temperature,
-                Humidity = data.Humidity,
+                Temperature = float.Parse(data.Temperature),
+                Humidity = float.Parse(data.Humidity),
                 CurrentDate = DateTime.Now,
-                Gas = data.Gas,
-                UserId = "503163c1-13fe-441b-bf33-4c7af8257b3d"
+                Gas = float.Parse(data.Gas),
+                DeviceId = 1
             };
             context.HouseStates.Add(houseState);
             context.SaveChanges();

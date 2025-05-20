@@ -11,6 +11,8 @@ namespace House.DATA_ACCESS
     {
         public EFContext(DbContextOptions<EFContext> options) : base(options) { }
 
+        public DbSet<Device> Devices { get; set; }
+        public DbSet<DevicePairingToken> PairingTokens { get; set; }
         public DbSet<HouseState> HouseStates { get; set; }
         public DbSet<Archive> Archive { get; set; }
 

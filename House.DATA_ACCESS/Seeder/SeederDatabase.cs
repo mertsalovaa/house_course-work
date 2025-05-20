@@ -52,12 +52,10 @@ namespace House.DATA_ACCESS.Seeder
                 context.SaveChanges();
                 HouseState houseState = new HouseState()
                 {
-                    Gas = "120",
-                    Temperature = "23.5",
-                    Humidity = "50.2",
-                    CurrentDate = DateTime.Now,
-                    User = newUser,
-                    UserId = newUser.Id
+                    Gas = 120,
+                    Temperature = (float)23.5,
+                    Humidity = (float)50.2,
+                    CurrentDate = DateTime.Now
                 };
                 context.HouseStates.Add(houseState);
 
