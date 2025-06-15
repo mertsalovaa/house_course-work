@@ -12,8 +12,8 @@ namespace House.DATA_ACCESS.DTO
         public string Temperature { get; set; } = string.Empty;
         public string Humidity { get; set; } = string.Empty;
         public string Gas { get; set; } = string.Empty;
-        public string DateTime { get; set; } = string.Empty; 
-        public string UserEmail { get; set; }
+        public DateTime DateTime { get; set; }
+        public string UserEmail { get; set; } = string.Empty;
         public string DeviceName { get; set; } = string.Empty;
         public string Status { get ; set; } = string.Empty;
     }

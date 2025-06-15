@@ -1,13 +1,13 @@
 import styled, { css } from "styled-components";
-import { colors } from "../assets/colors";
-import { BodyText1, MobileTextBtn } from "./typography";
-import { shadowBtn } from "../assets/shadows";
-import userIcon from '../assets/images/icons/user-icon.svg'
+import { colors } from "../../assets/colors";
+import { BodyText1, MobileTextBtn } from "../typography";
+import { shadowBtn } from "../../assets/shadows";
+import userIcon from '../../assets/images/icons/user-icon.svg'
 
-export default function Button({ variant, intent, onClick, disabled, children }) {
+export default function Button({ variant, intent, onClick, disabled, isLoginIcon = false, children }) {
     return (
         <FillButtonStyle className="flex items-center justify-center" disabled={disabled} $isActive={disabled} $variant={variant} $intent={intent} onClick={onClick}>
-            {intent === 'login' && <img src={userIcon} alt="user icon login" width={14} height={16} className="mr-2" />}
+            {isLoginIcon && <img src={userIcon} alt="user icon login" width={14} height={16} className="mr-2" />}
             <BodyText1>{children}</BodyText1>
         </FillButtonStyle>
     )

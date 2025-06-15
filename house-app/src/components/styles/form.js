@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { colors } from "../../assets/colors";
 import { blockShadow } from "../../assets/shadows";
 import { Headline1, Headline2, Headline3, MobileHeadline1, MobileHeadline2, MobileHeadline3, MobileSubHeadline1, SubHeadline1 } from "../typography";
-import Button from "../buttons";
+import Button from "../elements/buttons";
 
 
 export function AuthForm({ headline, subHeadline, clickFunction, btnText, isSignUp = false, children }) {

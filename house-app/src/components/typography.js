@@ -5,6 +5,11 @@ font-family: "eUkraine-Regular";
 font-size: 0.875em;
 line-height: 1.25em;
 `
+export const MobileBodyText1 = styled.p`
+font-family: "eUkraine-Regular";
+font-size: 0.7em;
+line-height: 1.1em;
+`
 export const Headline1 = styled.p`
 font-family: "eUkraine-Bold";
 font-size: 28px;

@@ -13,7 +13,7 @@ using System.Configuration;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.WebHost.UseUrls("http://192.168.1.103:8080");
+builder.WebHost.UseUrls("http://192.168.1.104:8080");
 builder.Services.AddSignalR();
 
 IServiceCollection services = builder.Services;
@@ -67,7 +67,7 @@ services.AddAuthentication(opt =>
 
             // Якщо запит до хаба
             var path = context.HttpContext.Request.Path;
-            if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/hubs/pairing"))
+            if (!string.IsNullOrEmpty(accessToken) && (path.StartsWithSegments("/hubs/pairing") || path.StartsWithSegments("/hubs/device-state")))
             {
                 context.Token = accessToken;
             }
@@ -129,6 +129,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 app.MapHub<PairingHub>("/hubs/pairing");
+app.MapHub<DeviceStateHub>("/hubs/device-state");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

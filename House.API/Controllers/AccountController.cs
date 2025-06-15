@@ -14,6 +14,7 @@ using Azure.Core;
 using House.API.hubs;
 using Microsoft.EntityFrameworkCore;
 using System;
+using House.DATA_ACCESS.DTO;
 
 namespace House.API.Controllers
 {
@@ -172,8 +173,7 @@ namespace House.API.Controllers
 
         }
 
-        // Генерація 6-символьний pairing-токену з допустимих символів
-        private string GenerateToken()
+        private string GenerateToken() // Генерація 6-символьний pairing-токену з допустимих символів
         {
             const int length = 6;
             const string chars = "234679ABCEFXGHJKLUNPTS";
@@ -189,32 +189,36 @@ namespace House.API.Controllers
 
             var random = new Random();
             string token = GenerateToken();
-            var currentTokenByUser = await context.PairingTokens.FirstOrDefaultAsync(x => x.UserId == userId);
-            if (currentTokenByUser != null)
+            var currentTokenByUsers = await context.PairingTokens.Where(x => x.UserId == userId).ToListAsync();
+            foreach (var currentTokenByUser in currentTokenByUsers)
             {
-                if (currentTokenByUser.CreatedAt.Date.Equals(DateTime.Now.Date))
+                if (currentTokenByUser != null && !currentTokenByUser.IsConfirmed)
                 {
-                    return currentTokenByUser.Token;
+                    if (currentTokenByUser.CreatedAt.Date.Equals(DateTime.Now.Date))
+                    {
+                        return currentTokenByUser.Token;
+                    }
+
+                    currentTokenByUser.Token = token;
+                    currentTokenByUser.CreatedAt = DateTime.Now;
+                    currentTokenByUser.IsConfirmed = false;
+                    currentTokenByUser.DeviceId = null;
+
+                    context.PairingTokens.Update(currentTokenByUser);
+                    
+                    await context.SaveChangesAsync();
+                    return token;
                 }
-
-                currentTokenByUser.Token = token;
-                currentTokenByUser.CreatedAt = DateTime.Now;
-                currentTokenByUser.IsConfirmed = false;
-                currentTokenByUser.DeviceId = null;
-
-                context.PairingTokens.Update(currentTokenByUser);
             }
-            else
+            var pairingToken = new DevicePairingToken()
             {
-                var pairingToken = new DevicePairingToken()
-                {
-                    UserId = userId,
-                    CreatedAt = DateTime.Now,
-                    IsConfirmed = false,
-                    Token = token
-                };
-                context.PairingTokens.Add(pairingToken);
-            }
+                UserId = userId,
+                CreatedAt = DateTime.Now,
+                IsConfirmed = false,
+                Token = token
+            };
+            context.PairingTokens.Add(pairingToken);
+
 
             await context.SaveChangesAsync();
             return token;
@@ -236,9 +240,9 @@ namespace House.API.Controllers
 
             if (confirmedDevice == null)
                 return new ResultDTO { Status = 404, Message = "Пристрій не знайдено." };
-            
+
             pairingToken.IsConfirmed = isConfirmed;
-            
+
             if (isConfirmed)
             {
                 confirmedDevice.User = user;
@@ -300,9 +304,7 @@ namespace House.API.Controllers
 
                 await hubContext.Clients.User(user.Id).SendAsync("DevicePaired", new
                 {
-                    deviceId = pairingToken.DeviceId,
-                    hardwareId = newDevice.HardwareId,
-                    message = "Пристрій хоче підключитись."
+                    message = $"Ви впевнені, що хочете додати пристрій “{newDevice.HardwareId}”?"
                 });
 
                 return new ResultDTO()
@@ -360,12 +362,12 @@ namespace House.API.Controllers
             };
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("get-normas-by-email")]
         public async Task<SettingNormas> GetNormasById([FromQuery] string email)
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var user = await userManager.FindByIdAsync(userId);
+            //var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var user = context.Users.FirstOrDefault(x => x.Email == email);;
 
             return new SettingNormas()
             {
@@ -376,7 +378,55 @@ namespace House.API.Controllers
             };
         }
 
+        [Authorize]
+        [HttpGet("get-devices-by-user")]
+        public async Task<List<DeviceDTO>> GetDevicesByUser()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null)
+            {
+                return null;
+            }
 
+            var devices = await context.Devices
+                .Where(d => d.UserId == userId)
+                .Select(d => new DeviceDTO
+                {
+                    Id = d.Id,
+                    DisplayName = d.DisplayName,
+                    HardwareId = d.HardwareId,
+                    Email = context.Users.FirstOrDefault(u => u.Id == userId).Email,
+                    LastActivity = context.HouseStates
+                        .Where(x => x.DeviceId == d.Id)
+                        .OrderByDescending(x => x.CurrentDate)
+                        .Select(x => (DateTime?)x.CurrentDate)
+                        .FirstOrDefault()
+                })
+                .ToListAsync();
+            return devices;
+        }
+
+        [Authorize]
+        [HttpGet("get-device-by-id")]
+        public async Task<DeviceDTO> GetDeviceById([FromQuery] int id)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var device = context.Devices.FirstOrDefault(d => d.Id == id && d.UserId == userId);
+
+            return new DeviceDTO()
+            {
+                Id = device.Id,
+                DisplayName = device.DisplayName,
+                HardwareId = device.HardwareId,
+                Email = context.Users.FirstOrDefault(u => u.Id == userId).Email,
+                DataOfCreating = context.PairingTokens.FirstOrDefault(p => p.DeviceId == device.Id).CreatedAt,
+                LastActivity = context.HouseStates
+                    .Where(x => x.DeviceId == device.Id)
+                    .OrderByDescending(x => x.CurrentDate)
+                    .Select(x => (DateTime?)x.CurrentDate)
+                    .FirstOrDefault()
+            };
+        }
 
         //{
         //  "id": "string",

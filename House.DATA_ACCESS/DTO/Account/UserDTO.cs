@@ -16,6 +16,6 @@ namespace House.DATA_ACCESS.DTO.Account
         public string Notes { get; set; } = string.Empty;
         public string TempNorma { get; set; } = string.Empty;
         public string HumidNorma { get; set; } = string.Empty;
-        //public string GasNorma { get; set; } = string.Empty;
+        public string GasNorma { get; set; } = string.Empty;
     }
 }

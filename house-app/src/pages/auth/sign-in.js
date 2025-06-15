@@ -6,6 +6,8 @@ import { AuthForm, SignInForm } from "../../components/styles/form";
 import MainLayout from "../../components/layout/main-layout";
 
 import emailIcon from '../../assets/images/icons/email-icon.svg'
+import { BodyText1 } from "../../components/typography";
+import { colors } from "../../assets/colors";
 
 export default function SignIn() {
     const [data, setData] = useState({});
@@ -14,6 +16,8 @@ export default function SignIn() {
     const [emailMessage, setEmailMessage] = useState('');
     const [password, setPassword] = useState('');
     const [passwordMessage, setPasswordMessage] = useState('');
+
+    const [errorMessage, setErrorMessage] = useState('');
 
     const [loaderState, setLoaderState] = useState(false);
     const navigate = useNavigate();
@@ -43,13 +47,13 @@ export default function SignIn() {
     async function login() {
         console.log(email);
         console.log(password);
-
+        setErrorMessage("");
         setEmailMessage("");
         setPasswordMessage("");
 
         setLoaderState(true);
         try {
-            const response = await fetch("http://192.168.1.103:8080/Account/login", {
+            const response = await fetch("http://192.168.1.104:8080/Account/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -67,19 +71,24 @@ export default function SignIn() {
             }
 
 
-            const data = await response.json(); 
+            const data = await response.json();
             if (data.status === 403) {
                 console.log(data);
                 return;
             }
-            console.log("Token:", data.token);  
+            console.log("Token:", data.token);
 
             localStorage.setItem("token", data.token);
 
-            navigate('/devices');
+            navigate('/user/devices');
 
         } catch (error) {
             console.error("Fetch error:", error);
+            if (error instanceof TypeError) {
+                setErrorMessage("Сервер недоступний. Перевірте з’єднання або спробуйте пізніше.");
+            } else {
+                setErrorMessage(error.message);
+            }
         } finally {
             setTimeout(() => setLoaderState(false), 500);
         }
@@ -107,10 +116,11 @@ export default function SignIn() {
     return (
         <MainLayout loaderState={loaderState}>
             <AuthForm headline={"Увійдіть до свого профілю"} subHeadline={"Авторизуйтесь, щоб отримати доступ для входу до системи."} btnText={"Продовжити"} clickFunction={login}>
-                <SignInForm className="flex items-center pt-6 mb-6">
+                <SignInForm className="flex items-center pt-6 mb-3">
                     <Input name={'email'} value={email} setValue={setEmail} text={"Email"} placeholder="ivanenko@gmail.com" icon={emailIcon} messageText={emailMessage} messageType={emailMessage && "error"} />
                     <Input name={'password'} value={password} setValue={setPassword} text={"Пароль"} placeholder="******" messageText={passwordMessage} messageType={passwordMessage && "error"} />
                 </SignInForm>
+                <BodyText1 className="text-center mb-6" style={{ color: `${colors.error}`, transition: "display 200s ease-in-out" }}>{errorMessage}</BodyText1>
             </AuthForm>
         </MainLayout>
     )

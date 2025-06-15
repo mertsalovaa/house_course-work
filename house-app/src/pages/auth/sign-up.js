@@ -10,7 +10,7 @@ import emailIcon from '../../assets/images/icons/email-icon.svg'
 import userIcon from '../../assets/images/icons/user-icon.svg'
 import phoneIcon from '../../assets/images/icons/phone-icon.svg'
 import addressIcon from '../../assets/images/icons/marker-icon.svg'
-import Button from "../../components/buttons";
+import Button from "../../components/elements/buttons";
 import StepIndicator from "../../components/elements/step-indicator";
 import NumberCounter from "../../components/elements/number-counter";
 import infoIcon from '../../assets/images/icons/info-icon.svg'
@@ -71,23 +71,23 @@ export default function SignUp() {
     // }, []);
 
     function validateStep1() {
-            const errors = {
-        username: username.trim() === '' ? 'Ім’я користувача обовʼязкове' : '',
-        email: email.trim() === '' ? 'Email обовʼязковий' :
-            !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()) ? 'Невірний формат email' : '',
-        phone: phone.trim() === '' ? 'Телефон обовʼязковий' : '',
-        address: address.trim() === '' ? 'Адреса обовʼязкова' : '',
-        password:
-            password.trim() === '' ? 'Пароль обовʼязковий' :
-            password.length < 6 ? 'Пароль має містити щонайменше 6 символів' :
-            !/[a-z]/.test(password) ? 'Пароль має містити хоча б одну маленьку літеру' :
-            !/[A-Z]/.test(password) ? 'Пароль має містити хоча б одну велику літеру' :
-            !/[0-9]/.test(password) ? 'Пароль має містити хоча б одну цифру' :
-            '',
+        const errors = {
+            username: username.trim() === '' ? 'Ім’я користувача обовʼязкове' : '',
+            email: email.trim() === '' ? 'Email обовʼязковий' :
+                !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()) ? 'Невірний формат email' : '',
+            phone: phone.trim() === '' ? 'Телефон обовʼязковий' : '',
+            address: address.trim() === '' ? 'Адреса обовʼязкова' : '',
+            password:
+                password.trim() === '' ? 'Пароль обовʼязковий' :
+                    password.length < 6 ? 'Пароль має містити щонайменше 6 символів' :
+                        !/[a-z]/.test(password) ? 'Пароль має містити хоча б одну маленьку літеру' :
+                            !/[A-Z]/.test(password) ? 'Пароль має містити хоча б одну велику літеру' :
+                                !/[0-9]/.test(password) ? 'Пароль має містити хоча б одну цифру' :
+                                    '',
 
-        confirmPassword: confirmPassword.trim() === '' ? 'Підтвердження паролю обовʼязкове' :
-            password.trim() !== confirmPassword.trim() ? 'Паролі не співпадають' : '',
-    };
+            confirmPassword: confirmPassword.trim() === '' ? 'Підтвердження паролю обовʼязкове' :
+                password.trim() !== confirmPassword.trim() ? 'Паролі не співпадають' : '',
+        };
 
         setValidationErrors(errors);
 
@@ -103,7 +103,7 @@ export default function SignUp() {
 
         setLoaderState(true);
         try {
-            const response = await fetch("http://192.168.1.103:8080/Account/register", {
+            const response = await fetch("http://192.168.1.104:8080/Account/register", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -183,10 +183,11 @@ export default function SignUp() {
                             <Headline2>Налаштування параметрів комфорту</Headline2>
                             <SubHeadline1 className="!w-full pt-2">Вкажіть, які значення температури, вологості чи інших показників для вас є нормальними.</SubHeadline1>
                         </span>
-                        <MeasuresBlock className="w-full flex flex-wrap justify-between pt-6 gap-8">
+                        <MeasuresBlock className="w-full flex flex-wrap justify-between py-6 gap-8">
                             <span className="values-block flex flex-wrap gap-6">
-                                <span className="flex flex-wrap justify-between w-full gap-6 sm:gap-10"> <NumberCounter name={'temperature'} text={"Температура"} value={temperature} setValue={setTemperature} measureUnit={'*C'} index={1} />
-                                    <NumberCounter name={'humidity'} text={"Вологість"} value={humidity} setValue={setHumidity} measureUnit={'%'} index={10} />
+                                <span className="flex flex-wrap justify-between w-full gap-6 md:gap-4 sm:gap-10">
+                                    <NumberCounter name={'temperature'} text={"Температура"} value={temperature} setValue={setTemperature} measureUnit={'*C'} index={1} maxValue={45} />
+                                    <NumberCounter name={'humidity'} text={"Вологість"} value={humidity} setValue={setHumidity} measureUnit={'%'} index={10} maxValue={120} />
                                 </span>
                                 <TextArea text={"Нотатки"} placeholder={"Уточнення, деталі по будинку і т.д. "} value={notes} setValue={setNotes} />
                             </span>
@@ -276,29 +277,22 @@ ${Text} {
 
 const MeasuresBlock = styled.span`
 .values-block {
-    width: 60%;
+    width: 62%;
 }
 
 @media (max-width: 730px) {
     gap: 24px;
 .values-block {
-    /* gap: 0; */
-    width: 80%;
-    span {
-        justify-content: start;
-    }
+    width: 85%;
 }
 ${InfoText} {
     width: 100%;
 }
  }
 
- @media (max-width: 555px) {
+ @media (max-width: 595px) {
     .values-block {
         width: 90%;
-        span {
-        justify-content: space-between;
-    }
     }
  }
 `

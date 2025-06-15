@@ -49,7 +49,7 @@ namespace House.DATA_ACCESS.JWT
             var jwt = new JwtSecurityToken(
                     signingCredentials: signInCredentials,
                     claims: claims,
-                    expires: DateTime.Now.AddDays(2)
+                    expires: DateTime.Now.AddDays(1)
                 );
 
             return new JwtSecurityTokenHandler().WriteToken(jwt);

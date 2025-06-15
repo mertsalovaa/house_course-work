@@ -6,34 +6,38 @@ import { colors } from '../../assets/colors'
 import { inputShadow } from '../../assets/shadows'
 import { useState } from 'react'
 
-export default function NumberCounter({ name, text, value, setValue, measureUnit, index }) {
+export default function NumberCounter({ name, text, value, setValue, measureUnit, index, maxValue }) {
     const [changed, setChanged] = useState('not');
-
 
     const changeValue = (type, index) => {
         setChanged('yes');
-        if (type === 'plus') {
-            setValue(value + index);
+        if (value + index <= maxValue) {
+            if (type === 'plus') {
+                setValue(value + index);
+            }
         }
-        if (type === 'minus') {
-            setValue(value - index);
+        if (value - index >= index) {
+            if (type === 'minus') {
+                setValue(value - index);
+            }
         }
     }
 
     return (
         <ItemStyle>
             <Headline3>{text}</Headline3>
-            <NumberItemStyle id={name} className='flex justify-between items-center' $changed={changed}>
+            <span className='flex w-full items-center gap-0.5'><NumberItemStyle id={name} className='flex justify-between items-center' $changed={changed}>
                 <span onClick={() => changeValue('minus', index)}><img src={minusIcon} alt='minus-icon' width={20} height={20} /></span>
                 <SubHeadline1>{value}</SubHeadline1>
                 <span onClick={() => changeValue('plus', index)}><img src={plusIcon} alt='plus-icon' width={20} height={20} /></span>
             </NumberItemStyle>
+                <SubHeadline1>{measureUnit}</SubHeadline1></span>
         </ItemStyle>
     )
 }
 
 const NumberItemStyle = styled.span`
-width: 140px;
+width: 130px;
 height: 50px;
 padding: 15px;
 background-color: ${colors.lighter};
@@ -62,10 +66,14 @@ ${Headline3} {
     color: ${colors.main};
     padding-bottom: 8px;
 }
+${SubHeadline1} {
+    width: 25px;
+    padding-bottom: 0;
+}
 
-@media (max-width: 730px) {
+@media (max-width: 742px) {
 ${NumberItemStyle} {
-    width: 130px;
+    width: 120px;
 }
 ${Headline3} {
  ${MobileHeadline3.componentStyle.rules.join('')};   

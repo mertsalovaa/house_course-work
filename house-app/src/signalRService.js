@@ -1,7 +1,7 @@
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 
 const connection = new HubConnectionBuilder()
-  .withUrl("http://192.168.1.103:8080/hubs/pairing", {
+  .withUrl("http://192.168.1.104:8080/hubs/pairing", {
     accessTokenFactory: () => localStorage.getItem("token") // або інше джерело токена
   })
   .withAutomaticReconnect()
